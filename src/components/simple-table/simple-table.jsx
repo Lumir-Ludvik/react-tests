@@ -1,38 +1,40 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./simple-table.component.scss";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {deletePerson} from "../redux/simple-form/simpleFormSlice";
 
 export const SimpleTableComponent = () => {
-    const [data, setData] = useState([]);
-    const [ switchColor, setSwitchColor ] = useState(false);
+    const tableData = useSelector(state => state.simpleForm);
+    const [data, setData] = useState([...tableData]);
+    const [switchColor, setSwitchColor] = useState(false);
 
     useEffect(() => {
         setData([
-            {
-                name: "Tomas Krcmar",
-                email: "tomas.krcmar@email.cz"
-            },
-            {
-                name: "Žerald z Vivije",
-                email: "zerald.vivije@email.cz"
-            }
+            ...tableData
         ]);
 
         setTimeout(() => setSwitchColor(!switchColor), 3000);
-    }, []);
+    }, [tableData]);
 
     useEffect(() => {
         console.log("color changed!");
     }, [switchColor]);
 
-    const deletePerson = (person) => {
-        setData([...data.filter(d => d.name !== person.name)]);
+    const dispatch = useDispatch();
+
+    const remove = (person) => {
+        dispatch(deletePerson(person))
     }
 
+    const navigate = useNavigate();
+
     return (
-        <>
+        <div className={"simple-table"}>
             <p>Simple Table</p>
+            <button onClick={() => navigate("/")}>Back</button>
             {
-              data.length > 0 &&
+                data.length > 0 &&
                 <table className={`table ${switchColor && "red-header"}`}>
                     <thead>
                     <tr>
@@ -49,7 +51,9 @@ export const SimpleTableComponent = () => {
 
                                     <td>{d.name}</td>
                                     <td>{d.email}</td>
-                                    <td><button onClick={deletePerson.bind(this, d)}>delete</button></td>
+                                    <td>
+                                        <button onClick={remove.bind(this, d)}>delete</button>
+                                    </td>
                                 </tr>
                             )
                         })
@@ -57,6 +61,6 @@ export const SimpleTableComponent = () => {
                     </tbody>
                 </table>
             }
-        </>
+        </div>
     )
 }
