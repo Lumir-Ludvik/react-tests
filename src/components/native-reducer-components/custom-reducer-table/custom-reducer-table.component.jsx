@@ -1,8 +1,8 @@
-import React, {useEffect, useReducer, useState} from "react";
+import React, {useCallback, useEffect, useReducer, useState} from "react";
 import "./custom-reducer-table.component.scss";
 import {useNavigate} from "react-router-dom";
 import {customSimpleFormReducer, initialTableData} from "../../../native-reducers/customSimpleFomReducer";
-import {DummyChildComponent} from "../../dummy-child/dummy-child.component";
+import DummyChildComponent from "../../dummy-child/dummy-child.component";
 import {TableDataContext} from "../../../contexts/contexts";
 
 
@@ -30,6 +30,11 @@ export const CustomReducerTableComponent = () => {
         dispatch({type: "REMOVE", payload: {...person}})
     }
 
+    // now it will only re-render child components if the table data changes
+    const theNothingFunction = useCallback(
+        () => console.log("it does nothing but it might re-render your children!"),
+        [tableData]
+    );
 
     return (
         <TableDataContext.Provider value={tableData}>
@@ -64,7 +69,10 @@ export const CustomReducerTableComponent = () => {
                         </tbody>
                     </table>
                 }
-                <DummyChildComponent title={"custom reducer dummy child"}/>
+                <DummyChildComponent
+                    title={"custom reducer dummy child"}
+                    theNothingFunction={theNothingFunction}
+                />
             </div>
         </TableDataContext.Provider>
     )

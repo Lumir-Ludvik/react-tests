@@ -1,8 +1,8 @@
-import {useContext, useMemo, useState} from "react";
+import {memo, useContext, useMemo, useState} from "react";
 import "./dummy-page.component.scss";
 import {TableDataContext} from "../../contexts/contexts";
 
-export const DummyChildComponent = ({title}) => {
+const DummyChildComponent = ({title, theNothingFunction}) => {
     const tableData = useContext(TableDataContext);
     const [count, setCount] = useState(0);
     const [dummyTrigger, setDummyTrigger] = useState(0);
@@ -34,6 +34,9 @@ export const DummyChildComponent = ({title}) => {
             <div>{count1}</div>
             <div>{countMemo}</div>
             <button onClick={() => setDummyTrigger(dummyTrigger + 1)}>Increment dummyTrigger</button>
+            <button onClick={theNothingFunction}>Trigger the nothing function</button>
         </>
     )
 }
+// prevent re-render if nothing changes. Does not work if passing functions from parent component which can re-render (new reference to function)
+export default memo(DummyChildComponent);
