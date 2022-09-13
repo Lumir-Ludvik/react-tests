@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
-import {setPerson} from "../redux/simple-form/simpleFormSlice";
+import {setPerson} from "../../../redux/simple-form/simpleFormSlice";
 import "./simple-form.component.scss";
 import {useNavigate} from "react-router-dom";
 

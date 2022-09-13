@@ -1,0 +1,15 @@
+.custom-table {
+  .table {
+    border: black solid 2px;
+
+    td, th {
+      border: black solid 2px;
+    }
+  }
+
+  .red-header {
+    th {
+      background-color: red;
+    }
+  }
+}

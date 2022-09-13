@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from "react";
-import "./simple-table.component.scss";
+import React, {useEffect, useReducer, useState} from "react";
+import "./custom-reducer-table.component.scss";
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {deletePerson} from "../redux/simple-form/simpleFormSlice";
+import {customSimpleFormReducer, initialTableData} from "../../../native-reducers/customSimpleFomReducer";
 
-export const SimpleTableComponent = () => {
-    const tableData = useSelector(state => state.simpleForm);
+export const CustomReducerTableComponent = () => {
+    const [tableData, dispatch] = useReducer(customSimpleFormReducer, initialTableData);
     const [data, setData] = useState([...tableData]);
     const [switchColor, setSwitchColor] = useState(false);
 
@@ -21,17 +20,16 @@ export const SimpleTableComponent = () => {
         console.log("color changed!");
     }, [switchColor]);
 
-    const dispatch = useDispatch();
 
     const remove = (person) => {
-        dispatch(deletePerson(person))
+        dispatch({type: "REMOVE", payload: {...person}})
     }
 
     const navigate = useNavigate();
 
     return (
-        <div className={"simple-table"}>
-            <p>Simple Table</p>
+        <div className={"custom-table"}>
+            <p>Custom reducer Table</p>
             <button onClick={() => navigate("/")}>Back</button>
             {
                 data.length > 0 &&
