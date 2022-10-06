@@ -1,6 +1,8 @@
 .main-page {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   div {
     margin: 1rem 1rem 0;
@@ -8,5 +10,23 @@
 
   button {
     margin: 0 0.2rem;
+  }
+
+  .intro {
+    border: aliceblue 2px solid;
+    border-radius: 10px;
+    mso-border-shadow: yes;
+    width: 50%;
+
+    .info {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      p {
+        background-color: cornflowerblue;
+        border: cornflowerblue 2px solid;
+        border-radius: 10px;
+      }
+    }
   }
 }
