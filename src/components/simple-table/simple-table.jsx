@@ -1,6 +1,29 @@
 import {useEffect, useState} from "react";
 import "./simple-table.component.scss";
+import * as PropTypes from "prop-types";
 
+function NewComponent(props) {
+    return <table className={`table ${props.switchColor && "red-header"}`}>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {
+            props.data.map(props.callbackfn)
+        }
+        </tbody>
+    </table>;
+}
+
+NewComponent.propTypes = {
+    switchColor: PropTypes.bool,
+    data: PropTypes.arrayOf(PropTypes.any),
+    callbackfn: PropTypes.func
+};
 export const SimpleTableComponent = () => {
     const [data, setData] = useState([]);
     const [ switchColor, setSwitchColor ] = useState(false);
@@ -33,29 +56,18 @@ export const SimpleTableComponent = () => {
             <p>Simple Table</p>
             {
               data.length > 0 &&
-                <table className={`table ${switchColor && "red-header"}`}>
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        data.map((d, i) => {
-                            return (
-                                <tr key={i}>
+                <NewComponent switchColor={switchColor} data={data} callbackfn={(d, i) => {
+                    return (
+                        <tr key={i}>
 
-                                    <td>{d.name}</td>
-                                    <td>{d.email}</td>
-                                    <td><button onClick={deletePerson.bind(this, d)}>delete</button></td>
-                                </tr>
-                            )
-                        })
-                    }
-                    </tbody>
-                </table>
+                            <td>{d.name}</td>
+                            <td>{d.email}</td>
+                            <td>
+                                <button onClick={deletePerson.bind(this, d)}>delete</button>
+                            </td>
+                        </tr>
+                    )
+                }}/>
             }
         </>
     )
